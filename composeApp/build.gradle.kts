@@ -9,72 +9,103 @@ plugins {
     alias(libs.plugins.composeCompiler)
     //
     //add
-    alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.ksp)
-   // alias(libs.plugins.room)
+    alias(libs.plugins.room)
 }
 
 kotlin {
+    sourceSets.commonMain {
+        kotlin.srcDir("build/generated/ksp/metadata")
+    }
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
+           iosX64(),
+           iosArm64(),
+           iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            // Required when using NativeSQLiteDriver
+            linkerOpts.add("-lsqlite3")
         }
     }
-    
+
     sourceSets {
-        
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             //
             //add dependencies
+            // Ktor
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
+            // Ktor
             implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+           // implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-
             //
             //add dependencies
-            implementation(libs.jetbrains.compose.navigation)
-            implementation(libs.kotlinx.serialization.json)
-           // implementation(libs.androidx.room.runtime)
-           // implementation(libs.sqlite.bundled)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
-            api(libs.koin.core)
+            // Navigation
+            implementation(libs.navigation.compose)
 
-            implementation(libs.bundles.ktor)
-            implementation(libs.bundles.coil)
+            //Coil
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.mp)
+            implementation(libs.coil.network.ktor3)
+
+            // Room + Sqlite
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.sqlite.bundled)
+
+            // window-size
+            //implementation(libs.screen.size)
+
+            // Ktor
+            implementation(libs.ktor.core)
+            implementation(libs.ktor.json)
+            implementation(libs.ktor.logging)
+            implementation(libs.ktor.negotiation)
+            implementation(libs.kotlinx.serialization.json)
+
+            //Kermit  for logging
+            //implementation(libs.kermit)
+
+            //dataStore
+            //implementation(libs.androidx.data.store.core)
+
+            // Koin
+            api(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.composeVM)
         }
         iosMain.dependencies {
             //
             //add dependencies
+            // Ktor
             implementation(libs.ktor.client.darwin)
         }
 
         dependencies {
-           // ksp(libs.androidx.room.compiler)
+             ksp(libs.androidx.room.compiler)
         }
     }
 }
@@ -104,6 +135,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        compose = true
+    }
+}
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
