@@ -15,9 +15,9 @@ plugins {
 }
 
 kotlin {
-    sourceSets.commonMain {
-        kotlin.srcDir("build/generated/ksp/metadata")
-    }
+//    sourceSets.commonMain {
+//        kotlin.srcDir("build/generated/ksp/metadata")
+//    }
 
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -35,7 +35,7 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
             // Required when using NativeSQLiteDriver
-            linkerOpts.add("-lsqlite3")
+           // linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -61,6 +61,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+
+            implementation(compose.material3AdaptiveNavigationSuite)
             //
             //add dependencies
             // Navigation
@@ -110,6 +112,17 @@ kotlin {
     }
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+dependencies{
+   // add("kspDesktop",libs.androidx.room.compiler)
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+}
+
 android {
     namespace = "org.example.project"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -139,9 +152,7 @@ android {
         compose = true
     }
 }
-room {
-    schemaDirectory("$projectDir/schemas")
-}
+
 
 dependencies {
     debugImplementation(compose.uiTooling)
