@@ -7,17 +7,15 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    //
-    //add
-    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.room)
+  //  alias(libs.plugins.room)
 }
 
 kotlin {
-    sourceSets.commonMain {
-        kotlin.srcDir("build/generated/ksp/metadata")
-    }
+//    sourceSets.commonMain {
+//        kotlin.srcDir("build/generated/ksp/metadata")
+//    }
 
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -35,7 +33,7 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
             // Required when using NativeSQLiteDriver
-            linkerOpts.add("-lsqlite3")
+            //linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -43,71 +41,52 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-            //
-            //add dependencies
-            // Ktor
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
-            // Ktor
             implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-           // implementation(compose.material)
-            implementation(compose.material3)
+           // implementation(compose.material3)
+            implementation(compose.material)
+            implementation(compose.material3AdaptiveNavigationSuite)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-            //
-            //add dependencies
-            // Navigation
-            implementation(libs.navigation.compose)
-
-            //Coil
-            implementation(libs.coil.compose.core)
-            implementation(libs.coil.compose)
-            implementation(libs.coil.mp)
-            implementation(libs.coil.network.ktor3)
-
-            // Room + Sqlite
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.sqlite.bundled)
-
-            // window-size
-            //implementation(libs.screen.size)
-
-            // Ktor
-            implementation(libs.ktor.core)
-            implementation(libs.ktor.json)
-            implementation(libs.ktor.logging)
-            implementation(libs.ktor.negotiation)
+           // implementation(libs.material3.window.size)
+           // implementation(libs.kotlinx.datetime)
+            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.jetbrains.compose.navigation)
             implementation(libs.kotlinx.serialization.json)
-
-            //Kermit  for logging
-            //implementation(libs.kermit)
-
-            //dataStore
-            //implementation(libs.androidx.data.store.core)
-
-            // Koin
-            api(libs.koin.core)
+           // implementation(libs.androidx.room.runtime)
+           // implementation(libs.sqlite.bundled)
             implementation(libs.koin.compose)
-            implementation(libs.koin.composeVM)
+            implementation(libs.koin.compose.viewmodel)
+            api(libs.koin.core)
+
+            implementation(libs.bundles.ktor)
+            implementation(libs.bundles.coil)
         }
-        iosMain.dependencies {
-            //
-            //add dependencies
-            // Ktor
+        nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
-
-        dependencies {
-             ksp(libs.androidx.room.compiler)
-        }
     }
+}
+
+//room {
+//    schemaDirectory("$projectDir/schemas")
+//}
+dependencies{
+    // add("kspDesktop",libs.androidx.room.compiler)
+//    add("kspAndroid", libs.androidx.room.compiler)
+//    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+//    add("kspIosX64", libs.androidx.room.compiler)
+//    add("kspIosArm64", libs.androidx.room.compiler)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 }
 
 android {
@@ -138,9 +117,6 @@ android {
     buildFeatures {
         compose = true
     }
-}
-room {
-    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
