@@ -70,6 +70,12 @@ kotlin {
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
+
+            //datastore
+            implementation("androidx.datastore:datastore-preferences-core:1.1.1")
+
+            //https://github.com/KhubaibKhan4/Alert-KMP
+           // implementation("io.github.khubaibkhan4:alert-kmp:1.0.8")
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
