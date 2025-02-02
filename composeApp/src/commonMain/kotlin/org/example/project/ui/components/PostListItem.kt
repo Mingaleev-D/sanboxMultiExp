@@ -18,9 +18,10 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import org.example.project.core.model.fake_data.AllPostDTO
-import org.example.project.core.model.fake_data.PopularPostItemDTO
 import org.example.project.ui.theme.DarkGray
+import org.example.project.ui.theme.ExtraLargeSpacing
 import org.example.project.ui.theme.LargeSpacing
 import org.example.project.ui.theme.LightGray
 import org.example.project.ui.theme.MediumSpacing
@@ -38,75 +39,82 @@ import sanboxmultiexp.composeapp.generated.resources.Res
 import sanboxmultiexp.composeapp.generated.resources.chat_icon_outlined
 import sanboxmultiexp.composeapp.generated.resources.dark_image_place_holder
 import sanboxmultiexp.composeapp.generated.resources.light_image_place_holder
+import sanboxmultiexp.composeapp.generated.resources.like_icon_filled
 import sanboxmultiexp.composeapp.generated.resources.like_icon_outlined
-import sanboxmultiexp.composeapp.generated.resources.round_more_horiz_24
+import sanboxmultiexp.composeapp.generated.resources.round_more_horizontal
 
 @Composable
 fun PostListItem(
        modifier: Modifier = Modifier,
        post: AllPostDTO,
-       onPostClick: (AllPostDTO) -> Unit,
-       onProfileClick: () -> Unit,
-       onLikeClick: () -> Unit,
-       onCommentClick: () -> Unit,
-       isDetailsScreen: Boolean = false
+       onPostClick: ((AllPostDTO) -> Unit)? = null,
+       onProfileClick: (userId: Long) -> Unit,
+       onLikeClick: (AllPostDTO) -> Unit,
+       onCommentClick: (AllPostDTO) -> Unit,
+       maxLines: Int = Int.MAX_VALUE
 ) {
     Column(
            modifier = modifier
                .fillMaxWidth()
-               .aspectRatio(ratio = .7f)
+               //.aspectRatio(ratio = 0.7f)
                .background(color = MaterialTheme.colors.surface)
-               .clickable {
-                   onPostClick(post)
-               },
+               //.clickable { onPostClick(post) }
+               .let { mod ->
+                   if (onPostClick != null) {
+                       mod.clickable { onPostClick(post) }.padding(bottom = ExtraLargeSpacing)
+                   } else {
+                       mod
+                   }
+               }
     ) {
-        // todo проработать передачу данных внутри компонента открытие деталей поста
-        // передавать обьект поста!
-        PostItemHeader(
-               name = post.name ?: "No Name",
+        PostHeader(
+               name = post.name ?: "",
                profileUrl = post.profilePhotoUrl ?: "",
-               date = post.createdAt ?: "Unknown",
+               date = post.createdAt ?: "",
                onProfileClick = {
-                   onProfileClick()
+                   onProfileClick(
+                          post.id.toLong()
+                   )
                }
         )
-
         AsyncImage(
                model = post.featuredimage ?: "https://services.google.com/fh/files/emails/image6_play_newsletter_march_2021.png",
                contentDescription = null,
-               modifier = Modifier.fillMaxWidth().aspectRatio(ratio = 1.0f),
+               modifier = modifier
+                   .fillMaxWidth()
+                   .aspectRatio(ratio = 1.0f),
                contentScale = ContentScale.Crop,
                placeholder = if (MaterialTheme.colors.isLight) {
                    painterResource(Res.drawable.light_image_place_holder)
                } else {
                    painterResource(Res.drawable.dark_image_place_holder)
-               },
+               }
         )
 
         PostLikesRow(
-               likesCount = post.like,
-               commentsCount = post.views,
-               onLikeClick = onLikeClick,
-               onCommentClick = onCommentClick
+               likesCount = post.like ?: 0,
+               commentCount = post.views ?: 0,
+               onLikeClick = { onLikeClick(post) },
+               isPostLiked = false, //post.isLiked ?: false,
+               onCommentClick = { onCommentClick(post) }
         )
 
         Text(
-               text = post.title,
+               text = post.email,
                style = MaterialTheme.typography.body2,
-               modifier = Modifier.padding(horizontal = LargeSpacing),
-               maxLines = if (isDetailsScreen) 20 else 2,
+               modifier = modifier.padding(horizontal = LargeSpacing),
+               maxLines = maxLines,
                overflow = TextOverflow.Ellipsis
         )
     }
-
 }
 
 @Composable
-fun PostItemHeader(
+fun PostHeader(
        modifier: Modifier = Modifier,
-       name: String?,
+       name: String,
        profileUrl: String?,
-       date: String?,
+       date: String,
        onProfileClick: () -> Unit
 ) {
     Row(
@@ -116,22 +124,23 @@ fun PostItemHeader(
                       horizontal = LargeSpacing,
                       vertical = MediumSpacing
                ),
-           verticalAlignment = CenterVertically,
+           verticalAlignment = Alignment.CenterVertically,
            horizontalArrangement = Arrangement.spacedBy(MediumSpacing)
     ) {
-//        CircleImage(
-//               modifier = Modifier.size(30.dp),
-//               imgUrl = profileUrl ?: "https://services.google.com/fh/files/emails/image6_play_newsletter_march_2021.png",
-//               onClick = onProfileClick
-//        )
+        CircleImage(
+               modifier = modifier.size(30.dp),
+               imgUrl = profileUrl ?: "https://services.google.com/fh/files/emails/image6_play_newsletter_march_2021.png",
+               onClick = onProfileClick
+        )
 
-//        Text(
-//               text = name ?: "no data",
-//               style = MaterialTheme.typography.subtitle2,
-//               color = MaterialTheme.colors.onSurface
-//        )
+        Text(
+               text = name,
+               style = MaterialTheme.typography.subtitle2,
+               color = MaterialTheme.colors.onSurface
+        )
+
         Box(
-               modifier = Modifier
+               modifier = modifier
                    .size(4.dp)
                    .clip(CircleShape)
                    .background(
@@ -140,70 +149,74 @@ fun PostItemHeader(
                           } else {
                               DarkGray
                           }
-                   ),
+                   )
         )
-//        Text(
-//               text = date ?: "no data",
-//               style = MaterialTheme.typography.caption.copy(
-//                      textAlign = TextAlign.Center,
-//                      fontSize = 12.sp
-//               ),
-//               color = if (MaterialTheme.colors.isLight) {
-//                   LightGray
-//               } else {
-//                   DarkGray
-//               },
-//               modifier = Modifier.weight(1f),
-//        )
+
+        Text(
+               text = date,
+               style = MaterialTheme.typography.caption.copy(
+                      textAlign = TextAlign.Start,
+                      fontSize = 12.sp,
+                      color = if (MaterialTheme.colors.isLight) {
+                          LightGray
+                      } else {
+                          DarkGray
+                      }
+               ),
+               modifier = modifier.weight(1f)
+        )
+
         Icon(
-               painter = painterResource(Res.drawable.round_more_horiz_24),
+               painter = painterResource(Res.drawable.round_more_horizontal),
                contentDescription = null,
                tint = if (MaterialTheme.colors.isLight) {
                    LightGray
                } else {
                    DarkGray
-               },
+               }
         )
     }
-
 }
 
 @Composable
 fun PostLikesRow(
        modifier: Modifier = Modifier,
-       likesCount: Int?,
-       commentsCount: Int?,
+       likesCount: Int,
+       commentCount: Int,
        onLikeClick: () -> Unit,
+       isPostLiked: Boolean,
        onCommentClick: () -> Unit
 ) {
     Row(
-           modifier = modifier.fillMaxWidth().padding(
-                  vertical = 0.dp,
-                  horizontal = MediumSpacing
-           ),
-           verticalAlignment = CenterVertically
+           modifier = modifier
+               .fillMaxWidth()
+               .padding(
+                      vertical = 0.dp,
+                      horizontal = MediumSpacing
+               ),
+           verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
                onClick = onLikeClick
         ) {
             Icon(
-                   painter = painterResource(Res.drawable.like_icon_outlined),
-                   contentDescription = null,
-                   tint = if (MaterialTheme.colors.isLight) {
-                       LightGray
+                   painter = if (isPostLiked) {
+                       painterResource(Res.drawable.like_icon_filled)
                    } else {
-                       DarkGray
-                   }
+                       painterResource(Res.drawable.like_icon_outlined)
+                   },
+                   contentDescription = null,
+                   tint = if (isPostLiked) Red else DarkGray
             )
         }
+
         Text(
-               text = "${likesCount ?: 100}",
-               style = MaterialTheme.typography.subtitle2.copy(
-                      fontSize = 18.sp
-               )
+               text = "$likesCount",
+               style = MaterialTheme.typography.subtitle2.copy(fontSize = 18.sp)
         )
 
-        Spacer(modifier = Modifier.width(MediumSpacing))
+        Spacer(modifier = modifier.width(MediumSpacing))
+
         IconButton(
                onClick = onCommentClick
         ) {
@@ -217,12 +230,10 @@ fun PostLikesRow(
                    }
             )
         }
+
         Text(
-               text = "${commentsCount ?: 400}",
-               style = MaterialTheme.typography.subtitle2.copy(
-                      fontSize = 18.sp
-               )
+               text = "$commentCount",
+               style = MaterialTheme.typography.subtitle2.copy(fontSize = 18.sp)
         )
     }
-
 }

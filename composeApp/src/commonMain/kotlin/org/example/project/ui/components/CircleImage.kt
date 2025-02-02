@@ -25,11 +25,12 @@ fun CircleImage(
            modifier = modifier
                .clip(CircleShape)
                .clickable { onClick() },
-           placeholder = if (MaterialTheme.colors.isLight) {
-               painterResource(Res.drawable.light_image_place_holder)
-           } else {
-               painterResource(Res.drawable.dark_image_place_holder)
-           },
+//           placeholder = if (MaterialTheme.colors.isLight) {
+//
+//               painterResource(Res.drawable.light_image_place_holder)
+//           } else {
+//               painterResource(Res.drawable.dark_image_place_holder)
+//           },
            contentScale = ContentScale.Crop,
     )
 }

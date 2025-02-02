@@ -13,4 +13,7 @@ sealed class Routes {
 
     @Serializable
     object Home : Routes()
+
+    @Serializable
+    object PDetails : Routes()
 }

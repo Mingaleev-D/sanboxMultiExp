@@ -1,12 +1,15 @@
 package org.example.project.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import org.example.project.core.model.fake_data.samplePosts
 import org.example.project.ui.auth.login.LoginRoot
 import org.example.project.ui.auth.signup.SingUpRoot
 import org.example.project.ui.home.HomeRoot
+import org.example.project.ui.post.PostDetailRoot
 
 @Composable
 fun NavGraphSetup(
@@ -29,6 +32,12 @@ fun NavGraphSetup(
         composable<Routes.Home> {
             HomeRoot(
                    navController = navController
+            )
+        }
+        composable<Routes.PDetails> {
+            PostDetailRoot(
+                   navController = navController,
+                   // post = samplePosts[0]
             )
         }
     }
