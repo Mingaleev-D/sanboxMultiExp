@@ -8,6 +8,7 @@ import org.example.project.feature.auth.domain.usecase.SignInUseCase
 import org.example.project.feature.auth.domain.usecase.SignUpUseCase
 import org.example.project.ui.auth.login.LoginViewModel
 import org.example.project.ui.auth.signup.SignUpViewModel
+import org.example.project.ui.home.HomeViewModel
 import org.example.project.utils.provideDispatcher
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
@@ -42,4 +43,5 @@ val sharedModule = module {
 
     viewModel { LoginViewModel(get()) }
     viewModel { SignUpViewModel(get()) }
+    viewModel { HomeViewModel() }
 }

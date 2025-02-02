@@ -6,15 +6,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import org.example.project.ui.auth.login.LoginRoot
 import org.example.project.ui.auth.signup.SingUpRoot
-import org.example.project.ui.home.HomePage
+import org.example.project.ui.home.HomeRoot
 
 @Composable
-fun HavGraphSetup(
+fun NavGraphSetup(
        navController: NavHostController,
 ) {
     NavHost(
            navController = navController,
-           startDestination = Routes.Login
+           startDestination = Routes.Home
     ) {
         composable<Routes.Login> {
             LoginRoot(
@@ -27,7 +27,8 @@ fun HavGraphSetup(
             )
         }
         composable<Routes.Home> {
-            HomePage(
+            HomeRoot(
+                   navController = navController
             )
         }
     }

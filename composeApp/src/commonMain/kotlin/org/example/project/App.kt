@@ -3,7 +3,7 @@ package org.example.project
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import org.example.project.ui.navigation.HavGraphSetup
+import org.example.project.ui.navigation.NavGraphSetup
 import org.example.project.ui.theme.SocialAppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -13,7 +13,7 @@ fun App() {
     SocialAppTheme {
         Scaffold {
             val navController = rememberNavController()
-            HavGraphSetup(
+            NavGraphSetup(
                    navController = navController,
                    )
         }
