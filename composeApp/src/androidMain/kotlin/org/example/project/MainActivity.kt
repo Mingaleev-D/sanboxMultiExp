@@ -3,14 +3,13 @@ package org.example.project
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import org.example.project.core.model.fake_data.sampleUsers
-import org.example.project.ui.home.components.OnboardingUserItem
+import org.example.project.core.model.fake_data.sampleComments
+import org.example.project.ui.components.CommentListItem
 import org.example.project.ui.theme.SocialAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,13 +34,10 @@ private fun DemoPreview() {
         Box(
                modifier = Modifier.fillMaxSize(),
         ) {
-            OnboardingUserItem(
-                   followsUser = sampleUsers[0],
-                   onUserClick = {
-                   },
-                   isFollowing = true,
-                   onFollowBtnClick = { _, _ ->
-                   }
+            CommentListItem(
+                   comment = sampleComments[0],
+                   onProfileClick = {},
+                   onMoreIconClick = {}
             )
         }
     }

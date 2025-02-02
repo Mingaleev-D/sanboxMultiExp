@@ -30,6 +30,7 @@ import org.example.project.core.model.fake_data.AllPostDTO
 import org.example.project.core.model.fake_data.FollowsUser
 import org.example.project.ui.components.PostListItem
 import org.example.project.ui.home.components.OnBoardingSection
+import org.example.project.ui.navigation.Routes
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import sanboxmultiexp.composeapp.generated.resources.Res
@@ -43,8 +44,9 @@ fun HomeRoot(
     HomePage(
            postUIState = viewModel.postUIState,
            onBoardingUIState = viewModel.onBoardingUIState,
-           // post = TODO(),
-           onPostClick = { },
+           onPostClick = { postIt ->
+               navController.navigate(Routes.PDetails.withId(postId = postIt))
+           },
            onProfileClick = {},
            onLikeClick = {},
            onCommentClick = {},
@@ -60,11 +62,9 @@ fun HomeRoot(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomePage(
-       modifier: Modifier = Modifier,
        postUIState: PostUIState,
        onBoardingUIState: OnBoardingUIState,
-       // post: AllPostDTO,
-       onPostClick: (AllPostDTO) -> Unit,
+       onPostClick: (postId: Int) -> Unit,
        onProfileClick: () -> Unit,
        onLikeClick: () -> Unit,
        onCommentClick: () -> Unit,
@@ -116,11 +116,11 @@ fun HomePage(
             ) {
                 Icon(
                        painter = painterResource(Res.drawable.person_circle_icon),
-                       contentDescription = null
+                       contentDescription = null,
+                       tint = MaterialTheme.colors.onSurface
                 )
             }
         }
-        // Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
                modifier = Modifier.fillMaxSize(),
                state = listState
@@ -143,7 +143,9 @@ fun HomePage(
             ) { items ->
                 PostListItem(
                        post = items,
-                       onPostClick = onPostClick,
+                       onPostClick = {
+                           onPostClick(items.id)
+                       },
                        onProfileClick = {},
                        onLikeClick = {
                        },

@@ -1,11 +1,9 @@
 package org.example.project.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import org.example.project.core.model.fake_data.samplePosts
 import org.example.project.ui.auth.login.LoginRoot
 import org.example.project.ui.auth.signup.SingUpRoot
 import org.example.project.ui.home.HomeRoot
@@ -34,11 +32,14 @@ fun NavGraphSetup(
                    navController = navController
             )
         }
-        composable<Routes.PDetails> {
-            PostDetailRoot(
-                   navController = navController,
-                   // post = samplePosts[0]
-            )
+        composable(
+               route = "PDetails/{postId}"
+        ) {backStackEntry ->
+
+            val postId = backStackEntry.arguments?.getString("postId")?.toIntOrNull()
+            if (postId != null) {
+                PostDetailRoot(navController = navController, postId = postId)
+            }
         }
     }
 }

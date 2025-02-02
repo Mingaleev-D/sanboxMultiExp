@@ -47,34 +47,22 @@ import sanboxmultiexp.composeapp.generated.resources.round_more_horizontal
 fun PostListItem(
        modifier: Modifier = Modifier,
        post: AllPostDTO,
-       onPostClick: ((AllPostDTO) -> Unit)? = null,
+       onPostClick: (id: Int) -> Unit,
        onProfileClick: (userId: Long) -> Unit,
        onLikeClick: (AllPostDTO) -> Unit,
        onCommentClick: (AllPostDTO) -> Unit,
-       maxLines: Int = Int.MAX_VALUE
+       //maxLines: Int = Int.MAX_VALUE
 ) {
     Column(
            modifier = modifier
                .fillMaxWidth()
-               //.aspectRatio(ratio = 0.7f)
                .background(color = MaterialTheme.colors.surface)
-               //.clickable { onPostClick(post) }
-               .let { mod ->
-                   if (onPostClick != null) {
-                       mod.clickable { onPostClick(post) }.padding(bottom = ExtraLargeSpacing)
-                   } else {
-                       mod
-                   }
-               }
     ) {
         PostHeader(
                name = post.name ?: "",
                profileUrl = post.profilePhotoUrl ?: "",
                date = post.createdAt ?: "",
                onProfileClick = {
-                   onProfileClick(
-                          post.id.toLong()
-                   )
                }
         )
         AsyncImage(
@@ -82,7 +70,7 @@ fun PostListItem(
                contentDescription = null,
                modifier = modifier
                    .fillMaxWidth()
-                   .aspectRatio(ratio = 1.0f),
+                   .aspectRatio(ratio = 1.0f).clickable { onPostClick(post.id) },
                contentScale = ContentScale.Crop,
                placeholder = if (MaterialTheme.colors.isLight) {
                    painterResource(Res.drawable.light_image_place_holder)
@@ -100,12 +88,13 @@ fun PostListItem(
         )
 
         Text(
-               text = post.email,
+               text = post.title,
                style = MaterialTheme.typography.body2,
                modifier = modifier.padding(horizontal = LargeSpacing),
-               maxLines = maxLines,
-               overflow = TextOverflow.Ellipsis
-        )
+               maxLines = 3,
+               overflow = TextOverflow.Ellipsis,
+               color = MaterialTheme.colors.onBackground,
+               )
     }
 }
 
@@ -115,7 +104,7 @@ fun PostHeader(
        name: String,
        profileUrl: String?,
        date: String,
-       onProfileClick: () -> Unit
+       onProfileClick: () -> Unit,
 ) {
     Row(
            modifier = modifier
@@ -212,7 +201,8 @@ fun PostLikesRow(
 
         Text(
                text = "$likesCount",
-               style = MaterialTheme.typography.subtitle2.copy(fontSize = 18.sp)
+               style = MaterialTheme.typography.subtitle2.copy(fontSize = 18.sp),
+               color = MaterialTheme.colors.onBackground
         )
 
         Spacer(modifier = modifier.width(MediumSpacing))
@@ -233,7 +223,8 @@ fun PostLikesRow(
 
         Text(
                text = "$commentCount",
-               style = MaterialTheme.typography.subtitle2.copy(fontSize = 18.sp)
+               style = MaterialTheme.typography.subtitle2.copy(fontSize = 18.sp),
+               color = MaterialTheme.colors.onBackground
         )
     }
 }

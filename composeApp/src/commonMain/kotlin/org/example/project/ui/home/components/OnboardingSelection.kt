@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import org.example.project.core.model.fake_data.FollowsUser
 import org.example.project.ui.theme.LargeSpacing
 import org.example.project.ui.theme.MediumSpacing
@@ -43,7 +45,8 @@ fun OnBoardingSection(
                    .fillMaxWidth()
                    .padding(top = MediumSpacing),
                style = MaterialTheme.typography.subtitle1,
-               textAlign = TextAlign.Center
+               textAlign = TextAlign.Center,
+               color = MaterialTheme.colors.onBackground
         )
 
         Text(
@@ -52,7 +55,8 @@ fun OnBoardingSection(
                    .fillMaxWidth()
                    .padding(horizontal = LargeSpacing),
                style = MaterialTheme.typography.body2,
-               textAlign = TextAlign.Center
+               textAlign = TextAlign.Center,
+               color = MaterialTheme.colors.onBackground
         )
 
         Spacer(modifier = modifier.height(LargeSpacing))
@@ -69,9 +73,15 @@ fun OnBoardingSection(
                modifier = modifier
                    .fillMaxWidth(fraction = 0.5f)
                    .align(Alignment.CenterHorizontally)
-                   .padding(vertical = LargeSpacing)
+                   .padding(vertical = LargeSpacing),
+               elevation = ButtonDefaults.elevation(
+                      defaultElevation = 6.dp
+               )
         ) {
-            Text(text = stringResource(Res.string.onboarding_button_text))
+            Text(
+                   text = stringResource(Res.string.onboarding_button_text),
+                   color = MaterialTheme.colors.onBackground
+            )
         }
     }
 }

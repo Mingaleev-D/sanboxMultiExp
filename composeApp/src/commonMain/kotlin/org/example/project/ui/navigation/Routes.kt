@@ -3,7 +3,8 @@ package org.example.project.ui.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class Routes {
+sealed class Routes(
+) {
 
     @Serializable
     object Login : Routes()
@@ -15,5 +16,7 @@ sealed class Routes {
     object Home : Routes()
 
     @Serializable
-    object PDetails : Routes()
+    object PDetails : Routes(){
+        fun withId(postId: Int) = "PDetails/$postId"
+    }
 }

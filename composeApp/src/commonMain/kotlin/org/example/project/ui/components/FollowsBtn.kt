@@ -8,8 +8,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.example.project.ui.theme.Gray
 
 @Composable
 fun FollowsBtn(
@@ -39,7 +41,8 @@ fun FollowsBtn(
                text = text,
                style = MaterialTheme.typography.button.copy(
                       fontSize = 12.sp
-               )
+               ),
+               color = if (MaterialTheme.colors.isLight) Color.White else Gray
         )
     }
 
