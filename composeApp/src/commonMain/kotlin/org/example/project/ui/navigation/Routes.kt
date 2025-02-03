@@ -15,6 +15,11 @@ sealed class Routes(
     @Serializable
     object Home : Routes()
 
+   @Serializable
+    object Profile : Routes(){
+        fun withId(userId: Int) = "Profile/$userId"
+    }
+
     @Serializable
     object PDetails : Routes(){
         fun withId(postId: Int) = "PDetails/$postId"

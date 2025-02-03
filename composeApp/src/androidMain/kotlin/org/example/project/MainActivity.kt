@@ -9,19 +9,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.example.project.core.model.fake_data.sampleComments
+import org.example.project.core.model.fake_data.sampleProfile
 import org.example.project.ui.components.CommentListItem
+import org.example.project.ui.profile.ProfileHeaderSelection
 import org.example.project.ui.theme.SocialAppTheme
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       // enableEdgeToEdge()
+        // enableEdgeToEdge()
         setContent {
             App()
         }
     }
 }
+
 //@Preview
 //@Composable
 //fun AppAndroidPreview() {
@@ -34,10 +37,15 @@ private fun DemoPreview() {
         Box(
                modifier = Modifier.fillMaxSize(),
         ) {
-            CommentListItem(
-                   comment = sampleComments[0],
-                   onProfileClick = {},
-                   onMoreIconClick = {}
+            ProfileHeaderSelection(
+                   imageUrl = sampleProfile[0].profileImgUrl ?: "",
+                   name = sampleProfile[0].name ?: "",
+                   bio = sampleProfile[0].bio ?: "",
+                   followersCount = 22,
+                   followingCount = 22,
+                   onBtnClick = { },
+                   onFollowersClick = { },
+                   onFollowingClick = { },
             )
         }
     }

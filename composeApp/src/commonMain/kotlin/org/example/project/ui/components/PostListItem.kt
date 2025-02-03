@@ -48,7 +48,7 @@ fun PostListItem(
        modifier: Modifier = Modifier,
        post: AllPostDTO,
        onPostClick: (id: Int) -> Unit,
-       onProfileClick: (userId: Long) -> Unit,
+       onProfileClick: () -> Unit,
        onLikeClick: (AllPostDTO) -> Unit,
        onCommentClick: (AllPostDTO) -> Unit,
        //maxLines: Int = Int.MAX_VALUE
@@ -62,8 +62,7 @@ fun PostListItem(
                name = post.name ?: "",
                profileUrl = post.profilePhotoUrl ?: "",
                date = post.createdAt ?: "",
-               onProfileClick = {
-               }
+               onProfileClick = onProfileClick
         )
         AsyncImage(
                model = post.featuredimage ?: "https://services.google.com/fh/files/emails/image6_play_newsletter_march_2021.png",
@@ -94,7 +93,7 @@ fun PostListItem(
                maxLines = 3,
                overflow = TextOverflow.Ellipsis,
                color = MaterialTheme.colors.onBackground,
-               )
+        )
     }
 }
 

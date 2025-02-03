@@ -8,6 +8,7 @@ import org.example.project.ui.auth.login.LoginRoot
 import org.example.project.ui.auth.signup.SingUpRoot
 import org.example.project.ui.home.HomeRoot
 import org.example.project.ui.post.PostDetailRoot
+import org.example.project.ui.profile.ProfileRoot
 
 @Composable
 fun NavGraphSetup(
@@ -34,11 +35,22 @@ fun NavGraphSetup(
         }
         composable(
                route = "PDetails/{postId}"
-        ) {backStackEntry ->
-
+        ) { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId")?.toIntOrNull()
             if (postId != null) {
                 PostDetailRoot(navController = navController, postId = postId)
+            }
+        }
+
+        composable(
+               route = "Profile/{userId}"
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull()
+            if (userId != null) {
+                ProfileRoot(
+                       navController = navController,
+                       userId = userId
+                )
             }
         }
     }

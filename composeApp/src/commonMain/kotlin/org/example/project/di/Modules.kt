@@ -10,6 +10,7 @@ import org.example.project.ui.auth.login.LoginViewModel
 import org.example.project.ui.auth.signup.SignUpViewModel
 import org.example.project.ui.home.HomeViewModel
 import org.example.project.ui.post.PostDetailsViewModel
+import org.example.project.ui.profile.ProfileViewModel
 import org.example.project.utils.provideDispatcher
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
@@ -46,4 +47,5 @@ val sharedModule = module {
     viewModel { SignUpViewModel(get()) }
     viewModel { HomeViewModel() }
     viewModel { PostDetailsViewModel() }
+    viewModel { ProfileViewModel() }
 }

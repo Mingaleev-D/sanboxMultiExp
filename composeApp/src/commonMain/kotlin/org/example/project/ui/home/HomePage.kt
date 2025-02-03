@@ -47,7 +47,9 @@ fun HomeRoot(
            onPostClick = { postIt ->
                navController.navigate(Routes.PDetails.withId(postId = postIt))
            },
-           onProfileClick = {},
+           onProfileClick = {userId->
+               navController.navigate(Routes.Profile.withId(userId))
+           },
            onLikeClick = {},
            onCommentClick = {},
            onFollowButtonClick = { _, _ -> },
@@ -65,7 +67,7 @@ fun HomePage(
        postUIState: PostUIState,
        onBoardingUIState: OnBoardingUIState,
        onPostClick: (postId: Int) -> Unit,
-       onProfileClick: () -> Unit,
+       onProfileClick: (Int) -> Unit,
        onLikeClick: () -> Unit,
        onCommentClick: () -> Unit,
        onFollowButtonClick: (Boolean, FollowsUser) -> Unit,
@@ -129,7 +131,7 @@ fun HomePage(
                 item(key = "onboardingSelectionKey") {
                     OnBoardingSection(
                            users = onBoardingUIState.users,
-                           onUserClick = onProfileClick,
+                           onUserClick = { },
                            onFollowButtonClick = onFollowButtonClick,
                            onBoardingFinish = onBoardingFinish
                     )
@@ -146,7 +148,9 @@ fun HomePage(
                        onPostClick = {
                            onPostClick(items.id)
                        },
-                       onProfileClick = {},
+                       onProfileClick = {
+                           onProfileClick(items.id)
+                       },
                        onLikeClick = {
                        },
                        onCommentClick = {}
