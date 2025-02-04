@@ -69,6 +69,11 @@ kotlin {
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
+
+            //Kermit
+            implementation("co.touchlab:kermit:2.0.4")
+            // https://mavenlibs.com/maven/dependency/com.huanshankeji/compose-multiplatform-material-icons-core
+            implementation("com.huanshankeji:compose-multiplatform-material-icons-core:0.3.0")
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -119,5 +124,6 @@ android {
 
 
 dependencies {
+    implementation(libs.androidx.ui.graphics.android)
     debugImplementation(compose.uiTooling)
 }

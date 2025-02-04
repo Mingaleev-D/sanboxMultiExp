@@ -26,6 +26,7 @@ coil3 = "3.0.0-rc02"
 ksp = "2.0.21-1.0.28"
 sqlite = "2.5.0-alpha11"
 room = "2.7.0-alpha11"
+uiGraphicsAndroid = "1.7.7"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -72,6 +73,7 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 material3-window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "material3WindowSize" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
