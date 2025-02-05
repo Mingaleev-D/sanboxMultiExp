@@ -1,7 +1,6 @@
 package org.example.project.domain.model
 
 import androidx.compose.ui.graphics.Color
-import org.example.project.data.dto.single_character.SingleCharacterDTO
 
 data class CharacterItemUI(
        val created: String,
