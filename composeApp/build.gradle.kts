@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.room)
+   // alias(libs.plugins.room)
 }
 
 kotlin {
@@ -61,8 +61,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.jetbrains.compose.navigation)
             implementation(libs.kotlinx.serialization.json)
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.sqlite.bundled)
+//            implementation(libs.androidx.room.runtime)
+//            implementation(libs.sqlite.bundled)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             api(libs.koin.core)
@@ -76,16 +76,16 @@ kotlin {
     }
 }
 
-room {
-    schemaDirectory("$projectDir/schemas")
-}
-dependencies{
-   // add("kspDesktop",libs.androidx.room.compiler)
-    add("kspAndroid", libs.androidx.room.compiler)
-    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-    add("kspIosX64", libs.androidx.room.compiler)
-    add("kspIosArm64", libs.androidx.room.compiler)
-}
+//room {
+//    schemaDirectory("$projectDir/schemas")
+//}
+//dependencies{
+//   // add("kspDesktop",libs.androidx.room.compiler)
+//    add("kspAndroid", libs.androidx.room.compiler)
+//    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+//    add("kspIosX64", libs.androidx.room.compiler)
+//    add("kspIosArm64", libs.androidx.room.compiler)
+//}
 
 android {
     namespace = "org.example.project"
