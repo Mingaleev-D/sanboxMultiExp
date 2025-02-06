@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import org.example.project.ui.pages.details.CharacterDetailsRoot
 import org.example.project.ui.pages.episodes.EpisodesRoot
+import org.example.project.ui.pages.home.HomeRoot
 
 @Composable
 fun NavGraphSetup(
@@ -16,15 +17,10 @@ fun NavGraphSetup(
 ) {
     NavHost(
            navController = navHostController,
-           startDestination = Routes.Details.withId(1)
+           startDestination = Routes.Home.route
     ) {
-        composable(
-               route = Routes.Home.route
-        ) {
-            Text(
-                   text = "Home",
-                   modifier = Modifier.fillMaxSize(),
-            )
+        composable(route = Routes.Home.route) {
+            HomeRoot(navController = navHostController)
         }
 
         composable(

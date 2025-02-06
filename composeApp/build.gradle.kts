@@ -69,6 +69,8 @@ kotlin {
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
+            // https://mavenlibs.com/maven/dependency/com.huanshankeji/compose-multiplatform-material-icons-core
+            implementation("com.huanshankeji:compose-multiplatform-material-icons-core:0.3.0")
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)

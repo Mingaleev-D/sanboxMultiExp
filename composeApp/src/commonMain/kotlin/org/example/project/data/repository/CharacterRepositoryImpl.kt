@@ -1,8 +1,10 @@
 package org.example.project.data.repository
 
 import org.example.project.data.mapppers.toCharacterItemUI
+import org.example.project.data.mapppers.toDomainCharacterPage
 import org.example.project.data.mapppers.toDomainEpisode
 import org.example.project.data.remote.ApiService
+import org.example.project.domain.model.AllCharacterUI
 import org.example.project.domain.model.CharacterItemUI
 import org.example.project.domain.model.EpisodeUI
 import org.example.project.domain.repository.CharacterRepository
@@ -52,6 +54,16 @@ class CharacterRepositoryImpl(
         return try {
             apiService.getEpisode(episodesIds)
                 .toDomainEpisode()
+                .let { SimpleResponse.Success(it) }
+        } catch (ex: Exception) {
+            SimpleResponse.Error(ex.toAppError().message)
+        }
+    }
+
+    override suspend fun getCharacterByPage(pageNumber: Int): SimpleResponse<AllCharacterUI> {
+        return try {
+            apiService.getCharacterByPage(pageNumber = pageNumber)
+                .toDomainCharacterPage()
                 .let { SimpleResponse.Success(it) }
         } catch (ex: Exception) {
             SimpleResponse.Error(ex.toAppError().message)
