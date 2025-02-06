@@ -16,6 +16,8 @@ sealed class Routes(
     object Episodes : Routes("episode"){
         fun withId(characterId: Int) = "${Episodes.route}/$characterId"
     }
+    @Serializable
+    object Search : Routes("search")
 
     @Serializable
     object Details : Routes("details") {

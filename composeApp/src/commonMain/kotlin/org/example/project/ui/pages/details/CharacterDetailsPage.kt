@@ -2,6 +2,7 @@ package org.example.project.ui.pages.details
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -66,85 +68,89 @@ fun CharacterDetailsPage(
            block = { viewModel.fetchCharacterDetails(characterId = characterId) }
     )
 
-    LazyColumn(
+    Column(
            modifier = Modifier.fillMaxSize(),
-           contentPadding = PaddingValues(all = 16.dp)
     ) {
-        when (state) {
-            is CharacterDetailsState.Error -> TODO()
-            CharacterDetailsState.Loading -> item { LoadingState() }
-            is CharacterDetailsState.Success -> {
-                val character = (state as CharacterDetailsState.Success).character
-                val characterDataPoints = (state as CharacterDetailsState.Success).characterDataPoint
-
-                // back
-                item {
-                    Row {
-                        Icon(
-                               imageVector = Icons.Default.ChevronLeft,
-                               contentDescription = null,
-                               tint = Color.White,
-                               modifier = Modifier
-                                   .padding(bottom = 8.dp)
-                                   .size(24.dp)
-                                   .clickable { onBack() },
+        Row(
+               modifier = Modifier.padding(top = 10.dp, end = 16.dp),
+        ) {
+            Spacer(modifier = Modifier.weight(1f, true))
+            Icon(
+                   imageVector = Icons.Default.ArrowBackIosNew,
+                   contentDescription = null,
+                   tint = Color.White,
+                   modifier = Modifier
+                       .padding(bottom = 8.dp)
+                       .size(24.dp)
+                       .clickable { onBack() },
+            )
+        }
+        LazyColumn(
+               modifier = Modifier.fillMaxSize(),
+               contentPadding = PaddingValues(all = 16.dp)
+        ) {
+            when (state) {
+                is CharacterDetailsState.Error -> TODO()
+                CharacterDetailsState.Loading -> item { LoadingState() }
+                is CharacterDetailsState.Success -> {
+                    val character = (state as CharacterDetailsState.Success).character
+                    val characterDataPoints = (state as CharacterDetailsState.Success).characterDataPoint
+                    //
+                    // Name plate
+                    item {
+                        CharacterDetailsNamePlateComponent(
+                               name = character.name,
+                               status = character.status
                         )
                     }
-                }
-                //
-                // Name plate
-                item {
-                    CharacterDetailsNamePlateComponent(
-                           name = character.name,
-                           status = character.status
-                    )
-                }
-                item { Spacer(modifier = Modifier.height(8.dp)) }
-                //
-                // Image
-                item {
-                    SubcomposeAsyncImage(
-                           model = character.imageUrl,
-                           contentDescription = "Character image",
-                           modifier = Modifier
-                               .fillMaxWidth()
-                               .aspectRatio(1f)
-                               .clip(RoundedCornerShape(12.dp)),
-                           loading = { LoadingState() }
-                    )
-                }
-                // Data points
-                items(characterDataPoints) {
-                    Spacer(modifier = Modifier.height(32.dp))
-                    DataPointComponent(dataPoint = it)
-                }
+                    item { Spacer(modifier = Modifier.height(8.dp)) }
+                    //
+                    // Image
+                    item {
+                        SubcomposeAsyncImage(
+                               model = character.imageUrl,
+                               contentDescription = "Character image",
+                               modifier = Modifier
+                                   .fillMaxWidth()
+                                   .aspectRatio(1f)
+                                   .clip(RoundedCornerShape(12.dp)),
+                               loading = { LoadingState() }
+                        )
+                    }
+                    // Data points
+                    items(characterDataPoints) {
+                        Spacer(modifier = Modifier.height(32.dp))
+                        DataPointComponent(dataPoint = it)
+                    }
 
-                item { Spacer(modifier = Modifier.height(32.dp)) }
-                // Button
-                item {
-                    Text(
-                           text = "View all episodes",
-                           color = RickAction,
-                           fontSize = 18.sp,
-                           textAlign = TextAlign.Center,
-                           modifier = Modifier
-                               .padding(horizontal = 32.dp)
-                               .border(
-                                      width = 1.dp,
-                                      color = RickAction,
-                                      shape = RoundedCornerShape(12.dp)
-                               )
-                               .clip(RoundedCornerShape(12.dp))
-                               .clickable {
-                                   navController.navigate(Routes.Episodes.withId(characterId))
-                               }
-                               .padding(vertical = 8.dp)
-                               .fillMaxWidth()
-                    )
-                }
+                    item { Spacer(modifier = Modifier.height(32.dp)) }
+                    // Button
+                    item {
+                        Text(
+                               text = "View all episodes",
+                               color = RickAction,
+                               fontSize = 18.sp,
+                               textAlign = TextAlign.Center,
+                               modifier = Modifier
+                                   .padding(horizontal = 32.dp)
+                                   .border(
+                                          width = 1.dp,
+                                          color = RickAction,
+                                          shape = RoundedCornerShape(12.dp)
+                                   )
+                                   .clip(RoundedCornerShape(12.dp))
+                                   .clickable {
+                                       navController.navigate(Routes.Episodes.withId(characterId))
+                                   }
+                                   .padding(vertical = 8.dp)
+                                   .fillMaxWidth()
+                        )
+                    }
 
-                item { Spacer(modifier = Modifier.height(34.dp)) }
+                    item { Spacer(modifier = Modifier.height(34.dp)) }
+                }
             }
         }
     }
+
 }

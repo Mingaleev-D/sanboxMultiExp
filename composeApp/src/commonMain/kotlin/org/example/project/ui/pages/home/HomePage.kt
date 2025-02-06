@@ -18,7 +18,6 @@ import androidx.navigation.NavController
 import org.example.project.ui.components.LoadingState
 import org.example.project.ui.navigation.Routes
 import org.example.project.ui.pages.home.components.CharacterGridItem
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -35,7 +34,6 @@ fun HomeRoot(
 
 @Composable
 fun HomePage(
-       modifier: Modifier = Modifier,
        viewModel: HomeViewModel = koinViewModel(),
        onCharacterSelected: (Int) -> Unit
 ) {

@@ -1,5 +1,6 @@
 package org.example.project.data.repository
 
+import org.example.project.data.dto.episode.AllEpisodesDTO
 import org.example.project.data.mapppers.toCharacterItemUI
 import org.example.project.data.mapppers.toDomainCharacterPage
 import org.example.project.data.mapppers.toDomainEpisode
@@ -64,6 +65,15 @@ class CharacterRepositoryImpl(
         return try {
             apiService.getCharacterByPage(pageNumber = pageNumber)
                 .toDomainCharacterPage()
+                .let { SimpleResponse.Success(it) }
+        } catch (ex: Exception) {
+            SimpleResponse.Error(ex.toAppError().message)
+        }
+    }
+
+    override suspend fun getAllEpisodes(pageNumber: Int): SimpleResponse<AllEpisodesDTO> {
+        return try {
+            apiService.getAllEpisodes(pageNumber = pageNumber)
                 .let { SimpleResponse.Success(it) }
         } catch (ex: Exception) {
             SimpleResponse.Error(ex.toAppError().message)
