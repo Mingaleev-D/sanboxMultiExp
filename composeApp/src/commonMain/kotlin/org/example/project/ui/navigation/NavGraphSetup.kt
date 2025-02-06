@@ -10,9 +10,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import org.example.project.ui.pages.details.CharacterDetailsRoot
+import org.example.project.ui.pages.episodes.AllEpisodesPageRoot
 import org.example.project.ui.pages.episodes.EpisodesRoot
 import org.example.project.ui.pages.home.HomeRoot
 import org.example.project.ui.pages.search.SearchPage
+import org.example.project.ui.pages.search.SearchRoot
 
 @Composable
 fun NavGraphSetup(
@@ -30,7 +32,14 @@ fun NavGraphSetup(
             HomeRoot(navController = navHostController)
         }
         composable(route = Routes.Search.route) {
-            SearchPage()
+            SearchRoot(
+                   navController = navHostController
+            )
+        }
+        composable(route = Routes.AllEpisodes.route) {
+            AllEpisodesPageRoot(
+                   navController = navHostController
+            )
         }
 
         composable(

@@ -99,7 +99,7 @@ sealed class NavDestination(
     object Episodes :
            NavDestination(
                   title = "Episodes",
-                  route = Routes.Episodes.route,
+                  route = Routes.AllEpisodes.route,
                   icon = Icons.Filled.Videocam
            )
 

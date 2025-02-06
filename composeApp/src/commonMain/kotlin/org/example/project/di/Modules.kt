@@ -5,7 +5,9 @@ import org.example.project.data.remote.ApiService
 import org.example.project.data.remote.HttpClientFactory
 import org.example.project.domain.repository.CharacterRepository
 import org.example.project.ui.pages.details.DetailsViewModel
+import org.example.project.ui.pages.episodes.AllEpisodesPageViewModel
 import org.example.project.ui.pages.home.HomeViewModel
+import org.example.project.ui.pages.search.SearchViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -19,4 +21,6 @@ val sharedModule = module {
 
     viewModel { DetailsViewModel(characterRepository = get()) }
     viewModel { HomeViewModel(characterRepository = get()) }
+    viewModel { AllEpisodesPageViewModel(characterRepository = get()) }
+    viewModel { SearchViewModel(characterRepository = get()) }
 }

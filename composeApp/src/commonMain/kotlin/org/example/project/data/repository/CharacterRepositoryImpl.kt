@@ -1,12 +1,15 @@
 package org.example.project.data.repository
 
 import org.example.project.data.dto.episode.AllEpisodesDTO
+import org.example.project.data.dto.episode.ResultDTO
 import org.example.project.data.mapppers.toCharacterItemUI
 import org.example.project.data.mapppers.toDomainCharacterPage
 import org.example.project.data.mapppers.toDomainEpisode
+import org.example.project.data.mapppers.toDomainEpisodePage
 import org.example.project.data.remote.ApiService
 import org.example.project.domain.model.AllCharacterUI
 import org.example.project.domain.model.CharacterItemUI
+import org.example.project.domain.model.EpisodePageUI
 import org.example.project.domain.model.EpisodeUI
 import org.example.project.domain.repository.CharacterRepository
 import org.example.project.utils.SimpleResponse
@@ -71,12 +74,62 @@ class CharacterRepositoryImpl(
         }
     }
 
-    override suspend fun getAllEpisodes(pageNumber: Int): SimpleResponse<AllEpisodesDTO> {
+    override suspend fun getEpisodesByPages(pageNumber: Int): SimpleResponse<EpisodePageUI> {
         return try {
-            apiService.getAllEpisodes(pageNumber = pageNumber)
+            apiService.getEpisodesByPages(pageNumber = pageNumber)
+                .toDomainEpisodePage()
                 .let { SimpleResponse.Success(it) }
         } catch (ex: Exception) {
             SimpleResponse.Error(ex.toAppError().message)
+
+        }
+    }
+
+    override suspend fun getAllEpisodes(): SimpleResponse<List<EpisodeUI>> {
+        val data = mutableListOf<EpisodeUI>()
+        var exception: String? = null
+
+        getEpisodesByPages(pageNumber = 1).onSuccess { firstPage ->
+            val totalPageCount = firstPage.info.pages
+            data.addAll(firstPage.episodes)
+
+            repeat(totalPageCount - 1) { index ->
+                getEpisodesByPages(pageNumber = index + 2).onSuccess { nextPage ->
+                    data.addAll(nextPage.episodes)
+                }.onError { error ->
+                    exception = error
+                }
+
+                if (exception == null) {
+                    return@onSuccess
+                }
+            }
+        }.onError {
+            exception = it
+        }
+
+        return exception?.let { SimpleResponse.Error(it) } ?: SimpleResponse.Success(data)
+    }
+
+    override suspend fun getCharacterByPages(
+           pageNumber: Int,
+           queryParams: Map<String, String>
+    ): SimpleResponse<AllCharacterUI> {
+        return try {
+            val response = apiService.getCharacterByPages(pageNumber, queryParams)
+            SimpleResponse.Success(response.toDomainCharacterPage())
+        } catch (e: Exception) {
+            SimpleResponse.Error(e.toAppError().message)
+        }
+
+    }
+
+    override suspend fun searchAllCharacterByName(searchQuery: String): SimpleResponse<List<CharacterItemUI>> {
+        return try {
+            val characters = apiService.searchAllCharacterByName(searchQuery)
+            SimpleResponse.Success(characters.map { it.toCharacterItemUI() })
+        } catch (e: Exception) {
+            SimpleResponse.Error(e.toAppError().message)
         }
     }
 

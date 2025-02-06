@@ -8,3 +8,16 @@ data class EpisodeUI(
        val airDate: String,
        val characterIdsInEpisode: List<Int>
 )
+
+
+data class EpisodePageUI(
+       val info: Info,
+       val episodes: List<EpisodeUI>
+) {
+    data class Info(
+           val count: Int,
+           val pages: Int,
+           val next: String?,
+           val prev: String?
+    )
+}
