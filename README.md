@@ -34,7 +34,7 @@
 
 ветка
 ```
-  dev/image_app
+  dev/rick
 ```
 https://github.com/user-attachments/assets/9fa908a4-2473-4c23-8b88-a5a6b8ad0e88
 
